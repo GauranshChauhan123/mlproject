@@ -46,14 +46,60 @@ class ModelTrainer:
                 'KNN' : KNeighborsRegressor(),
                 'RandomForest':RandomForestRegressor(),
                 'DecisionTree':DecisionTreeRegressor(),
-                'XGboost':XGBRegressor(),
+                'XGBoost':XGBRegressor(),
                 'SVR': SVR(),
                 'Adaboost':AdaBoostRegressor()
                  }
-            
+            params = {
+                 "LinearRegression": {
+                 "fit_intercept": [True, False],
+                 "positive": [False, True]
+                          },
+
+                 "DecisionTree": {
+                 "max_depth": [None, 5, 10, 20],
+                 "min_samples_split": [2, 5, 10],
+                 "min_samples_leaf": [1, 2, 4]
+                               },
+
+                 "RandomForest": {
+                 "n_estimators": [100, 200],
+                 "max_depth": [None, 10, 20],
+                 "min_samples_split": [2, 5],
+                 "min_samples_leaf": [1, 2]
+                                },
+
+                 "Adaboost": {
+                        "n_estimators": [50, 100, 200],
+                        "learning_rate": [0.01, 0.05, 0.1, 0.5, 1.0],
+                        # "loss": ["linear", "square", "exponential"]
+                                 },
+
+
+                 "SVR": {
+                         "C": [0.1, 1, 10],
+                           "kernel": ["rbf", "linear"],
+                          "gamma": ["scale", "auto"]
+                     },
+
+                     "KNN": {
+                     "n_neighbors": [3, 5, 7, 9],
+                     "weights": ["uniform", "distance"],
+                     "p": [1, 2]   # 1 = Manhattan, 2 = Euclidean
+                         },
+
+                     "XGBoost": {
+                     "n_estimators": [100, 200],
+                     "learning_rate": [0.05, 0.1],
+                     "max_depth": [3, 5, 7],
+                     "subsample": [0.8, 1.0],
+                     "colsample_bytree": [0.8, 1.0]
+                        }
+
+            }
 
             model_report:dict = evaluate_model(x_train=x_train,y_train=y_train,x_test=x_test,y_test=y_test,
-                                               models=models)
+                                               models=models,params=params)
             
             best_model_score = max(model_report.values())
 
